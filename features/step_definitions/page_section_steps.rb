@@ -16,7 +16,7 @@ Then(/^I can access elements within the section using a block$/) do
   @test_site.home.people do |persons|
     expect(persons.has?(:headline, text: 'People')).to be true
     expect(persons.headline.text).to eq('People')
-    expect(persons.has_no?(:dinosaur)).to be true
+    expect(persons.no?(:dinosaur)).to be true
     expect(persons.has?(:individuals, count: 4)).to be true
   end
 
@@ -32,14 +32,14 @@ Then(/^access to elements is constrained to those within the section$/) do
   @test_site.home.people do |persons|
     expect(persons).to have_no_css('.welcome')
     expect { persons.has(:welcome_message) }.to raise_error(NoMethodError)
-    expect(persons.has_no?(:welcome_message_on_the_parent)).to be true
+    expect(persons.no?(:welcome_message_on_the_parent)).to be true
   end
 end
 
 Then(/^the page does not have a section$/) do
-  expect(@test_site.home.has_no?(:nonexistent_section)).to be true
+  expect(@test_site.home.no?(:nonexistent_section)).to be true
 
-  expect { @test_site.home.has_no?(:nonexistent_section) }.not_to raise_error(SitePrism::NoSelectorForElement)
+  expect { @test_site.home.no?(:nonexistent_section) }.not_to raise_error(SitePrism::NoSelectorForElement)
 end
 
 Then(/^that section is there too$/) do
@@ -141,7 +141,7 @@ Then(/^I can get direct access to a page through a child section$/) do
 end
 
 Then(/^the page contains a section with no element$/) do
-  expect(@test_site.home.has_no?(:dinosaur)).to be true
+  expect(@test_site.home.no?(:dinosaur)).to be true
 end
 
 Then(/^the page contains a deeply nested span$/) do

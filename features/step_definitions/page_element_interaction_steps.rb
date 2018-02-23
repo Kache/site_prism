@@ -9,15 +9,15 @@ Then(/^the page has no title$/) do
 end
 
 Then(/^the page does not have element$/) do
-  expect(@test_site.home.has_no?(:nonexistent_element)).to be true
+  expect(@test_site.home.no?(:nonexistent_element)).to be true
 
-  expect { @test_site.home.has_no?(:nonexistent_element) }.not_to raise_error(SitePrism::NoSelectorForElement)
+  expect { @test_site.home.no?(:nonexistent_element) }.not_to raise_error(SitePrism::NoSelectorForElement)
 end
 
 Then(/^the page does not have elements$/) do
-  expect(@test_site.home.has_no?(:nonexistent_elements)).to be true
+  expect(@test_site.home.no?(:nonexistent_elements)).to be true
 
-  expect { @test_site.home.has_no?(:nonexistent_elements) }.not_to raise_error(SitePrism::NoSelectorForElement)
+  expect { @test_site.home.no?(:nonexistent_elements) }.not_to raise_error(SitePrism::NoSelectorForElement)
 end
 
 Then(/^I can see the welcome header$/) do
@@ -33,7 +33,7 @@ Then(/^I can see the welcome header with capybara query options$/) do
 end
 
 Then(/^the welcome header is not matched with invalid text$/) do
-  expect(@test_site.home.has_no?(:welcome_header, text: "This Doesn't Match!")).to be true
+  expect(@test_site.home.no?(:welcome_header, text: "This Doesn't Match!")).to be true
 end
 
 Then(/^I can see the welcome message$/) do
@@ -59,13 +59,13 @@ end
 
 Then(/^I cannot see the missing squirrel$/) do
   using_wait_time(0) do
-    expect(@test_site.home.has_no?(:squirrel)).to be true
+    expect(@test_site.home.no?(:squirrel)).to be true
   end
 end
 
 Then(/^I cannot see the missing other thingy$/) do
   using_wait_time(0) do
-    expect(@test_site.home.has_no?(:other_thingy)).to be true
+    expect(@test_site.home.no?(:other_thingy)).to be true
   end
 end
 

@@ -14,7 +14,7 @@ module SitePrism
       end
     end
 
-    def has_no?(element_name, *args)
+    def no?(element_name, *args)
       selector_for(element_name) { return true }
       !has?(element_name, *args)
     end

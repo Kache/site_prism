@@ -28,7 +28,7 @@ describe SitePrism::Page do
       element :thing, 'input#nonexistent'
     end
     page = PageWithElement.new
-    expect { page.has_no?(:thing) }.not_to raise_error
+    expect { page.no?(:thing) }.not_to raise_error
   end
 
   it 'should be able to wait for an element' do
