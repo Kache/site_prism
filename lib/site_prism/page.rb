@@ -7,7 +7,7 @@ module SitePrism
     include Capybara::DSL
     include ElementChecker
     include Loadable
-    extend ElementContainer
+    include ElementContainer
 
     load_validation do
       [displayed?, "Expected #{current_url} to match #{url_matcher} but it did not."]
@@ -106,10 +106,6 @@ module SitePrism
 
     def element_exists?(*find_args)
       page.has_selector?(*find_args)
-    end
-
-    def element_does_not_exist?(*find_args)
-      page.has_no_selector?(*find_args)
     end
 
     def url_matches?(expected_mappings = {})

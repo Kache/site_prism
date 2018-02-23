@@ -7,7 +7,7 @@ module SitePrism
     include Capybara::DSL
     include ElementChecker
     include Loadable
-    extend ElementContainer
+    include ElementContainer
 
     attr_reader :root_element, :parent
 
@@ -53,10 +53,6 @@ module SitePrism
 
     def element_exists?(*find_args)
       root_element.has_selector?(*find_args) unless root_element.nil?
-    end
-
-    def element_does_not_exist?(*find_args)
-      root_element.has_no_selector?(*find_args) unless root_element.nil?
     end
   end
 end
