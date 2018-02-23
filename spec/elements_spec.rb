@@ -7,12 +7,12 @@ describe SitePrism::Page do
     expect(SitePrism::Page).to respond_to :elements
   end
 
-  it 'elements method should generate existence check method' do
+  it 'should be able to check for elements existence' do
     class PageWithElements < SitePrism::Page
       elements :bobs, 'a.b c.d'
     end
     page = PageWithElements.new
-    expect(page).to respond_to :has_bobs?
+    expect { page.has?(:bobs) }.not_to raise_error
   end
 
   it 'elements method should generate method to return the elements' do

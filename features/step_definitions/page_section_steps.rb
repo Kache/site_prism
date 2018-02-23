@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
 Then(/^I can see elements in the section$/) do
-  expect(@test_site.home).to have_people
+  expect(@test_site.home.has?(:people)).to be true
   expect(@test_site.home.people.headline).to have_content('People')
-  expect(@test_site.home.people).to have_headline(text: 'People')
+  expect(@test_site.home.people.has?(:headline, text: 'People')).to be true
 end
 
 Then(/^I can see a section in a section$/) do
-  expect(@test_site.section_experiments.parent_section.child_section).to have_nice_label(text: 'something')
+  expect(@test_site.section_experiments.parent_section.child_section.has?(:nice_label, text: 'something')).to be true
 end
 
 Then(/^I can access elements within the section using a block$/) do
-  expect(@test_site.home).to have_people
+  expect(@test_site.home.has?(:people)).to be true
 
   @test_site.home.people do |persons|
-    expect(persons).to have_headline(text: 'People')
+    expect(persons.has?(:headline, text: 'People')).to be true
     expect(persons.headline.text).to eq('People')
-    expect(persons).to have_no_dinosaur
-    expect(persons).to have_individuals(count: 4)
+    expect(persons.has_no?(:dinosaur)).to be true
+    expect(persons.has?(:individuals, count: 4)).to be true
   end
 
   # the above would pass if the block were ignored, this verifies it is executed:
   expect do
-    @test_site.home.people { |p| expect(p).to have_dinosaur }
+    @test_site.home.people { |p| expect(p.has?(:dinosaur)).to be true }
   end.to raise_error(RSpec::Expectations::ExpectationNotMetError)
 end
 
@@ -31,37 +31,37 @@ Then(/^access to elements is constrained to those within the section$/) do
 
   @test_site.home.people do |persons|
     expect(persons).to have_no_css('.welcome')
-    expect { persons.has_welcome_message? }.to raise_error(NoMethodError)
-    expect(persons).to have_no_welcome_message_on_the_parent
+    expect { persons.has(:welcome_message) }.to raise_error(NoMethodError)
+    expect(persons.has_no?(:welcome_message_on_the_parent)).to be true
   end
 end
 
 Then(/^the page does not have a section$/) do
-  expect(@test_site.home.has_no_nonexistent_section?).to be true
+  expect(@test_site.home.has_no?(:nonexistent_section)).to be true
 
-  expect(@test_site.home).to have_no_nonexistent_section
+  expect { @test_site.home.has_no?(:nonexistent_section) }.not_to raise_error(SitePrism::NoSelectorForElement)
 end
 
 Then(/^that section is there too$/) do
-  expect(@test_site.page_with_people).to have_people_list
+  expect(@test_site.page_with_people.has?(:people_list)).to be true
   expect(@test_site.page_with_people.people_list.headline).to have_content('People')
-  expect(@test_site.page_with_people.people_list).to have_headline(text: 'People')
+  expect(@test_site.page_with_people.people_list.has?(:headline, text: 'People')).to be true
 end
 
 Then(/^I can see a section within a section using nested blocks$/) do
-  expect(@test_site.section_experiments).to have_parent_section
+  expect(@test_site.section_experiments.has?(:parent_section)).to be true
 
   @test_site.section_experiments.parent_section do |parent|
-    expect(parent).to have_child_section
+    expect(parent.has?(:child_section)).to be true
     expect(parent.child_section.nice_label.text).to eq('something')
     parent.child_section do |child|
-      expect(child).to have_nice_label(text: 'something')
+      expect(child.has?(:nice_label, text: 'something')).to be true
     end
   end
 end
 
 Then(/^I can see a collection of sections$/) do
-  expect(@test_site.section_experiments).to have_search_results
+  expect(@test_site.section_experiments.has?(:search_results)).to be true
 
   @test_site.section_experiments.search_results.each_with_index do |search_result, i|
     expect(search_result.title.text).to eq("title #{i}")
@@ -74,13 +74,13 @@ Then(/^I can see a collection of sections$/) do
 end
 
 Then(/^I can see an anonymous section$/) do
-  expect(@test_site.section_experiments).to have_anonymous_section
+  expect(@test_site.section_experiments.has?(:anonymous_section)).to be true
   expect(@test_site.section_experiments.anonymous_section.title.text).to eq('Anonymous Section')
   expect(@test_site.section_experiments.anonymous_section.upcase_title_text).to eq('ANONYMOUS SECTION')
 end
 
 Then(/^I can see a collection of anonymous sections$/) do
-  expect(@test_site.section_experiments).to have_anonymous_section
+  expect(@test_site.section_experiments.has?(:anonymous_section)).to be true
 
   @test_site.section_experiments.anonymous_sections.each_with_index do |section, i|
     expect(section.title.text).to eq("Section #{i}")
@@ -113,7 +113,7 @@ end
 Then(/^I can see individual people in the people list$/) do
   expect(@test_site.home.people.individuals.size).to eq(4)
   expect(@test_site.home.people.individuals(count: 4).size).to eq(4)
-  expect(@test_site.home.people).to have_individuals(count: 4)
+  expect(@test_site.home.people.has?(:individuals, count: 4)).to be true
 end
 
 Then(/^I can get access to a page through a section$/) do
@@ -141,11 +141,11 @@ Then(/^I can get direct access to a page through a child section$/) do
 end
 
 Then(/^the page contains a section with no element$/) do
-  expect(@test_site.home.people).to have_no_dinosaur
+  expect(@test_site.home.has_no?(:dinosaur)).to be true
 end
 
 Then(/^the page contains a deeply nested span$/) do
-  expect(@test_site.section_experiments.level_1[0].level_2[0].level_3[0].level_4[0].level_5[0]).to have_deep_span
+  expect(@test_site.section_experiments.level_1[0].level_2[0].level_3[0].level_4[0].level_5[0].has?(:deep_span)).to be true
   expect(@test_site.section_experiments.level_1[0].level_2[0].level_3[0].level_4[0].level_5[0].deep_span.text).to eq 'Deep span'
 end
 

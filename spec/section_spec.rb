@@ -30,7 +30,7 @@ describe SitePrism::Page do
         end
 
         page = YetAnotherPageWithASection.new
-        expect(page).to respond_to :has_something?
+        expect { page.has?(:something) }.not_to raise_error
       end
     end
 

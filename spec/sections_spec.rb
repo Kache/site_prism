@@ -7,7 +7,7 @@ describe SitePrism::Page do
     expect(SitePrism::Page).to respond_to :sections
   end
 
-  it 'should create a matching existence method for sections' do
+  it 'should be able to check for sections existence' do
     class SomePageWithSectionsThatNeedsTestingForExistence < SitePrism::Section
     end
 
@@ -20,8 +20,8 @@ describe SitePrism::Page do
     end
 
     page = YetAnotherPageWithSections.new
-    expect(page).to respond_to :has_some_things?
-    expect(page).to respond_to :has_other_things?
+    expect { page.has?(:some_things) }.not_to raise_error
+    expect { page.has?(:other_things) }.not_to raise_error
     # will throw a NoMethodError if methods overwritten by rspec matchers are called
     expect { page.other_things }.not_to raise_error
   end
